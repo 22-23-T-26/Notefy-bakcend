@@ -1,7 +1,6 @@
 package mk.ukim.finki.notefy.security;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -19,9 +18,11 @@ import java.io.IOException;
 public class JwtFilter extends GenericFilterBean {
     public static final String HEADER_PREFIX = "Bearer ";
 
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
+    public JwtFilter(JwtService jwtService) {
+        this.jwtService = jwtService;
+    }
 
 
     @Override
