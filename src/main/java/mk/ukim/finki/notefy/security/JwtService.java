@@ -43,7 +43,7 @@ public class JwtService {
     }
 
     public String createToken(AppUser user) {
-        return createToken(user.getUsername(), user.getRoles());
+        return createToken(user.getUsername(), user.getRole());
     }
     String createToken(String username, String authorities) {
         Calendar cal = Calendar.getInstance();
