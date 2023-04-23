@@ -12,26 +12,14 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AppUser {
+public class Subject {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    private String subjectName;
 
-    private String password;
-
-
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
-
-    private String firstName;
-
-    private String lastName;
-
-    private String phoneNumber;
-
-    public String getRole() {
-        return role.toString();
-    }
+    @ManyToOne
+    private Faculty faculty;
 }
