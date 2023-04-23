@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import mk.ukim.finki.notefy.model.entities.AppUser;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 public class JwtService {
     private Long expirationTime = 3_600_000_000_000L;
 
-    private String keyStr = "Asdfa!@ASd23edsa..As32qdsad21sdxxsa++s";
+    private String keyStr = "Asdsadsaed21aweasdadxasd12dsad3!!!";
     private SecretKey secretKey;
 
     @PostConstruct
@@ -33,7 +34,18 @@ public class JwtService {
     public String createToken(Authentication auth) {
         String username = auth.getName();
         Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        String strAuthorities = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
 
+        return createToken(username, strAuthorities);
+
+    }
+
+    public String createToken(AppUser user) {
+        return createToken(user.getUsername(), user.getRoles());
+    }
+    String createToken(String username, String authorities) {
         Calendar cal = Calendar.getInstance();
         Date cd = cal.getTime(); // cd => current year
         cal.add(Calendar.YEAR, 1);
@@ -42,13 +54,10 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject(username)
                 .setExpiration(ny)
-                .claim("AUTHORITIES_KEY", authorities.stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.joining(",")))
+                .claim("AUTHORITIES_KEY", authorities)
                 .signWith(secretKey)
                 .compact();
     }
-
     public Authentication getAuthentication(String validToken) {
         Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(validToken).getBody();
         String principal = claims.getSubject();

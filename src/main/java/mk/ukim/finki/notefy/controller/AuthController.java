@@ -1,7 +1,10 @@
 package mk.ukim.finki.notefy.controller;
 
 import mk.ukim.finki.notefy.model.dto.LoginDto;
+import mk.ukim.finki.notefy.model.dto.RegisterDto;
+import mk.ukim.finki.notefy.model.entities.AppUser;
 import mk.ukim.finki.notefy.security.JwtService;
+import mk.ukim.finki.notefy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +23,9 @@ public class AuthController {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping({"/login"})
     public String getToken(@Valid @RequestBody LoginDto loginDto) {
 
@@ -28,5 +34,13 @@ public class AuthController {
                         loginDto.getPassword()));
 
         return jwtService.createToken(auth);
+    }
+
+
+    @PostMapping({"/register"})
+    public String register(@Valid @RequestBody RegisterDto registerDto) {
+        AppUser user = userService.createUser(registerDto);
+
+        return jwtService.createToken(user);
     }
 }
