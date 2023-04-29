@@ -17,8 +17,13 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
 
-    public AppUser findByUsernameAndPassword(String username, String password) {
-        return userRepository.findByUsernameAndPassword(username, password)
+//    public AppUser findByUsernameAndPassword(String username, String password) {
+//        return userRepository.findByUsernameAndPassword(username, password)
+//                .orElseThrow(() -> new BadRequest("User with those credentials doesn't exist"));
+//    }
+
+    public AppUser findByUsernameOrEmailAndPassword(String username, String email, String password) {
+        return userRepository.findByUsernameOrEmailAndPassword(username, email, password)
                 .orElseThrow(() -> new BadRequest("User with those credentials doesn't exist"));
     }
 
@@ -27,11 +32,20 @@ public class UserService {
         if (user != null) {
             throw new BadRequest("User with username: " +registerDto.getUsername() + " already exists!");
         }
-        // TODO add other fields needed and other validation
+        user = userRepository.findByEmail(registerDto.getEmail()).orElse(null);
+        if (user != null) {
+            throw new BadRequest("User with email: " +registerDto.getEmail() + " already exists!");
+        }
+
         return userRepository.save(
                 AppUser.builder()
                         .username(registerDto.getUsername())
                         .password(passwordEncoder.encode(registerDto.getPassword()))
+                        .email(registerDto.getEmail())
+                        .firstName(registerDto.getFirstName())
+                        .lastName(registerDto.getLastName())
+                        .phoneNumber(registerDto.getPhoneNumber())
+                        .role(registerDto.getRole())
                         .build()
         );
     }

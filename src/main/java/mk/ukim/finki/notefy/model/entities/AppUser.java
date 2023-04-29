@@ -21,6 +21,7 @@ public class AppUser {
 
     private String password;
 
+    private String email;
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
