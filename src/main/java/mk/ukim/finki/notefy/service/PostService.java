@@ -86,12 +86,12 @@ public class PostService {
         if(postById != null){
             if(rating>0 && rating<=5 && postById.getAssignedUsers().contains(appUser)) {
                 if(postById.getRatingsByUser()==null){
-                    HashMap<AppUser,Integer> ratings= new HashMap<>();
-                    ratings.put(appUser,rating);
+                    HashMap<Long,Integer> ratings= new HashMap<>();
+                    ratings.put(appUser.getId(),rating);
                     postById.setRatingsByUser(ratings);
                 }
                 else {
-                    postById.getRatingsByUser().put(appUser,rating);
+                    postById.getRatingsByUser().put(appUser.getId(),rating);
                 }
             }
         }

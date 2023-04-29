@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Entity
@@ -50,8 +51,11 @@ public class Post {
 
     //Records of all the ratings by assigned users
     @ElementCollection
-    @Null
-    private HashMap<AppUser,Integer> ratingsByUser;
+    @MapKeyColumn(name="user_id")
+    @Column(name="rating")
+    @CollectionTable(name = "post_ratings",
+            joinColumns = @JoinColumn(name = "post_id"))
+    private Map<Long,Integer> ratingsByUser=new HashMap<Long,Integer>();
 
     @Null
     private Double finalRating;

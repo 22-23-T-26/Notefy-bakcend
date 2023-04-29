@@ -17,10 +17,10 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
 
-//    public AppUser findByUsernameAndPassword(String username, String password) {
-//        return userRepository.findByUsernameAndPassword(username, password)
-//                .orElseThrow(() -> new BadRequest("User with those credentials doesn't exist"));
-//    }
+    public AppUser findByUsernameAndPassword(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username, password)
+                .orElseThrow(() -> new BadRequest("User with those credentials doesn't exist"));
+    }
 
     public AppUser findByUsernameOrEmailAndPassword(String username, String email, String password) {
         return userRepository.findByUsernameOrEmailAndPassword(username, email, password)
