@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Null;
+import java.util.List;
 
 @Entity
 @Builder
@@ -31,7 +33,14 @@ public class AppUser {
 
     private String phoneNumber;
 
+
+    //All Posts that the User is assigning
+    @ManyToMany(mappedBy = "assignedUsers")
+    @Null
+    private List<Post> postsOfUsers;
+
     public String getRole() {
         return role.toString();
     }
+
 }

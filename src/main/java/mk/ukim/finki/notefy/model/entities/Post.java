@@ -4,9 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Null;
 import java.io.File;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 
 @Entity
@@ -33,4 +38,22 @@ public class Post {
     public boolean paymentFlag;
     @Enumerated(value = EnumType.STRING)
     private Category category;
+
+    //Date of creating the post
+    @CreationTimestamp
+    private Date dateOfCreation;
+
+    //All Users who got the post
+    @ManyToMany
+    @Null
+    private List<AppUser> assignedUsers;
+
+    //Records of all the ratings by assigned users
+    @ElementCollection
+    @Null
+    private HashMap<AppUser,Integer> ratingsByUser;
+
+    @Null
+    private Double finalRating;
+
 }
