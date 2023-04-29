@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mk.ukim.finki.notefy.model.entities.Role;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -22,6 +23,15 @@ public class RegisterDto {
     @NotBlank(message = "Password must not be blank")
     private String password;
 
+    @NotNull(message = "E-mail address must be provided")
+    @NotBlank(message = "E-mail address must not be blank")
+    private String email;
 
-    // TODO ADD OTHER NEEDED FIELDS
+    private String firstName;
+
+    private String lastName;
+
+    private String phoneNumber;
+
+    private Role role;
 }
