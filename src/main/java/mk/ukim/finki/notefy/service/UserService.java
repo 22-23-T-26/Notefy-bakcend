@@ -17,18 +17,22 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
 
-    public AppUser findByUsernameAndPassword(String username, String password) {
-        return userRepository.findByUsernameAndPassword(username, password)
-                .orElseThrow(() -> new BadRequest("User with those credentials doesn't exist"));
+//    public AppUser findByUsernameAndPassword(String username, String password) {
+//        return userRepository.findByUsernameAndPassword(username, password)
+//                .orElseThrow(() -> new BadRequest("User with those credentials doesn't exist"));
+//    }
+
+    public AppUser getByUsernameOrEmailOrNull(String username) {
+        return userRepository.getByUsernameOrEmail(username, username)
+                .orElse(null);
     }
 
-    public AppUser findByUsernameOrEmailAndPassword(String username, String email, String password) {
-        return userRepository.findByUsernameOrEmailAndPassword(username, email, password)
-                .orElseThrow(() -> new BadRequest("User with those credentials doesn't exist"));
-    }
 
+    public AppUser getByUsernameOrNull(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
     public AppUser createUser(RegisterDto registerDto) {
-        AppUser user = userRepository.findByUsername(registerDto.getUsername()).orElse(null);
+        AppUser user = getByUsernameOrNull(registerDto.getUsername());
         if (user != null) {
             throw new BadRequest("User with username: " +registerDto.getUsername() + " already exists!");
         }
