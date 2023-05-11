@@ -27,9 +27,11 @@ public class DbUserLoginProvider implements AuthenticationProvider {
         String password = authentication.getCredentials().toString();
 
         AppUser user = userService.getByUsernameOrEmailOrNull(username);
+
         if (user == null) {
             throw new BadRequest("User with those credentials doesn't exist");
         }
+
         if (passwordEncoder.matches(password, user.getPassword()))
             return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList(user.getRole()));
 //        return null;

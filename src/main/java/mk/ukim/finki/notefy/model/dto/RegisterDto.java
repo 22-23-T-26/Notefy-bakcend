@@ -35,6 +35,7 @@ public class RegisterDto {
     private String lastName;
 
     private String phoneNumber;
+
 // TODO uncomment
 //    @NotNull(message = "Role must be provided")
 //    @NotBlank(message = "Role must not be blank")
