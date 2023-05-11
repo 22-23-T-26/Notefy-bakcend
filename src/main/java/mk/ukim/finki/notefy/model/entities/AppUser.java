@@ -41,7 +41,7 @@ public class AppUser {
     private List<Post> postsOfUsers;
 
     public String getRole() {
-        return role.toString();
+        return role == null ? "" : role.toString();
     }
 
 }
