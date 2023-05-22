@@ -26,12 +26,12 @@ public class RegisterDto {
     @NotNull(message = "E-mail address must be provided")
     @NotBlank(message = "E-mail address must not be blank")
     private String email;
-    @NotNull(message = "E-mail address must be provided")
-    @NotBlank(message = "E-mail address must not be blank")
+    @NotNull(message = "First name must be provided")
+    @NotBlank(message = "First name must not be blank")
     private String firstName;
 
-    @NotNull(message = "E-mail address must be provided")
-    @NotBlank(message = "E-mail address must not be blank")
+    @NotNull(message = "Last name must be provided")
+    @NotBlank(message = "Last name must not be blank")
     private String lastName;
 
     private String phoneNumber;
