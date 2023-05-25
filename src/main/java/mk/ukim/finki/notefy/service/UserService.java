@@ -5,6 +5,7 @@ import mk.ukim.finki.notefy.model.dto.RegisterDto;
 import mk.ukim.finki.notefy.model.entities.AppUser;
 import mk.ukim.finki.notefy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,12 @@ public class UserService {
                         .build()
         );
     }
-    
+
+    public AppUser getCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return userRepository.getByUsernameOrEmail(username, username)
+                .orElseThrow(() -> new BadRequest("You are not authenticated"));
+    }
+
     //TODO: Update user
 }
