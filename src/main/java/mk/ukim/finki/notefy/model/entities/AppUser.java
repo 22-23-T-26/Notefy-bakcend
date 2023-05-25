@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Null;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,6 +40,15 @@ public class AppUser {
     @ManyToMany(mappedBy = "assignedUsers")
     @Null
     private List<Post> postsOfUsers;
+
+    @OneToMany(mappedBy = "createdUser", cascade = CascadeType.ALL)
+    private List<Discussion> createdDiscussions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Like> createdLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "createdUser", cascade = CascadeType.ALL)
+    private List<Comment> createdComments = new ArrayList<>();
 
     public String getRole() {
         return role == null ? "" : role.toString();
