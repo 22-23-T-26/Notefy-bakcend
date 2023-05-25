@@ -38,6 +38,8 @@ public class UserService {
             userRepository.save(
                     AppUser.builder()
                             .username("admin")
+                            .firstName("Admin")
+                            .lastName("Administrator")
                             .role(Role.ADMIN)
                             .password(passwordEncoder.encode("admin"))
                             .build()
