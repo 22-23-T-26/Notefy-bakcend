@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mk.ukim.finki.notefy.model.entities.Comment;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class DiscussionDto {
 
         private LocalDateTime createdTime;
 
-        private List<Comment> comments = new ArrayList<>();
+        private List<CommentDto> comments = new ArrayList<>();
 
         private Long numberOfLikes;
         private Long numberOfComments;

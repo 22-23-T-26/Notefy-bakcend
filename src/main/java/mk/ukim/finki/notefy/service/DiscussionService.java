@@ -39,8 +39,6 @@ public class DiscussionService {
 
     private DiscussionDto convertToDto(Discussion discussion, List<Long> likeIds, Boolean loadComments) {
 
-
-
         // Instantiate and return a new DiscussionDto based on the given Discussion entity.
         // You'll have to fill the details of this method based on the specific fields
         // present in your Discussion and DiscussionDto classes.
@@ -53,7 +51,7 @@ public class DiscussionService {
 
         dto.setCreatedBy(discussion.getCreatedUser().getFullName());
         if (loadComments) {
-            dto.setComments(discussion.getComments());
+            dto.setComments(discussion.getComments().stream().map(CommentService::mapToDto).collect(Collectors.toList()));
         }
         dto.setNumberOfComments((long) discussion.getComments().size());
         dto.setNumberOfLikes((long) discussion.getLikes().size());
@@ -68,6 +66,8 @@ public class DiscussionService {
     }
 
     public DiscussionDto getDiscussionByIdDto(Long id) {
-        return this.convertToDto(discussionRepo.findById(id).orElseThrow(() -> new BadRequest("Discussion with id: " + id + " wasn't found.")), List.of(), true);
+        AppUser currentUser = userService.getCurrentUser();
+        List<Long> likeIds = currentUser.getCreatedLikes().stream().map(Like::getId).collect(Collectors.toList());
+        return this.convertToDto(discussionRepo.findById(id).orElseThrow(() -> new BadRequest("Discussion with id: " + id + " wasn't found.")), likeIds, true);
     }
 }

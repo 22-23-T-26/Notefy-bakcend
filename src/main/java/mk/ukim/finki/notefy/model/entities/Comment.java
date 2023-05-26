@@ -1,5 +1,6 @@
 package mk.ukim.finki.notefy.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,10 +37,12 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name="discussion_id")
+    @JsonIgnore
     private Discussion discussion;
 
     @ManyToOne
     @JoinColumn(name="parent_comment_id")
+    @JsonIgnore
     private Comment parentComment;
 
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
