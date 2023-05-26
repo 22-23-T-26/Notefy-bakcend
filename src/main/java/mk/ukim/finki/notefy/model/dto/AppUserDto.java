@@ -23,8 +23,6 @@ public class AppUserDto {
 
   private double rating;
 
-  private String password;
-
   private String email;
 
   private String phoneNumber;

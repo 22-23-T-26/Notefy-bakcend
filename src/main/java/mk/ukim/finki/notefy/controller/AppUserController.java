@@ -18,12 +18,12 @@ public class AppUserController {
   private final UserService userService;
 
   @GetMapping("/{username}")
-  public ResponseEntity<AppUserDto> getDetailsForUser(@PathVariable String username){
+  public ResponseEntity<AppUserDto> getDetailsForUser(@PathVariable String username) {
 
     AppUser appUser = userService.getByUsernameOrNull(username);
 
     AppUserDto appUserDto = new AppUserDto(appUser.getFirstName(), appUser.getLastName(), appUser.getUsername(),
-        userService.getRatingForUser(username), appUser.getPassword(), appUser.getEmail(), appUser.getPhoneNumber(),appUser.getPostsOfUsers());
+        userService.getRatingForUser(username), appUser.getEmail(), appUser.getPhoneNumber(), appUser.getPostsOfUsers());
 
     return ResponseEntity.ok(appUserDto);
   }
