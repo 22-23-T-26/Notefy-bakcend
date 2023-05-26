@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DiscussionRepository extends JpaRepository<Discussion, Long> {
-    Page<Discussion> findByTitleContaining(String title, Pageable pageable);
+    Page<Discussion> findByTitleContainingOrderByCreatedTimeDesc(String title, Pageable pageable);
 }

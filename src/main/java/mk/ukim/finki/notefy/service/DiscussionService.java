@@ -34,7 +34,7 @@ public class DiscussionService {
     public Page<DiscussionDto> getAllDiscussions(String title, Pageable pageable) {
         AppUser currentUser = userService.getCurrentUser();
         List<Long> likeIds = currentUser.getCreatedLikes().stream().map(Like::getId).collect(Collectors.toList());
-        return discussionRepo.findByTitleContaining(title, pageable).map((discussion) -> convertToDto(discussion, likeIds, false));
+        return discussionRepo.findByTitleContainingOrderByCreatedTimeDesc(title, pageable).map((discussion) -> convertToDto(discussion, likeIds, false));
     }
 
     private DiscussionDto convertToDto(Discussion discussion, List<Long> likeIds, Boolean loadComments) {
