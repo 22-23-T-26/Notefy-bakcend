@@ -28,11 +28,13 @@ public class CommentService {
         comment.setCreatedUser(userService.getCurrentUser());
         comment.setDiscussion(discussionService.getDiscussionById(discussionId));
         if (parentCommentId != null) {
-            comment.setParentComment(getCommentById(parentCommentId));
+            Comment parentComment = getCommentById(parentCommentId);
+            comment.setParentComment(parentComment);
         }
 
         return CommentService.mapToDto(commentRepo.save(comment));
     }
+
 
     public Page<Comment> getAllComments(Long discussionId, Pageable pageable) {
         return commentRepo.findAllByDiscussionId(discussionId, pageable);

@@ -40,13 +40,13 @@ public class Comment {
     @JsonIgnore
     private Discussion discussion;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="parent_comment_id")
     @JsonIgnore
     private Comment parentComment;
 
-    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comment> replies = new ArrayList<>();
 
-    // Getters and setters
+
 }
