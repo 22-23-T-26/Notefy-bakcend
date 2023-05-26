@@ -70,4 +70,8 @@ public class DiscussionService {
         List<Long> likeIds = currentUser.getCreatedLikes().stream().map(Like::getId).collect(Collectors.toList());
         return this.convertToDto(discussionRepo.findById(id).orElseThrow(() -> new BadRequest("Discussion with id: " + id + " wasn't found.")), likeIds, true);
     }
+
+    public Discussion save(Discussion discussion) {
+        return discussionRepo.save(discussion);
+    }
 }

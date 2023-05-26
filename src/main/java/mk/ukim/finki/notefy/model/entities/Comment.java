@@ -35,18 +35,18 @@ public class Comment {
     @CreatedDate
     private LocalDateTime createdTime;
 
-    @ManyToOne
-    @JoinColumn(name="discussion_id")
-    @JsonIgnore
-    private Discussion discussion;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="parent_comment_id")
-    @JsonIgnore
-    private Comment parentComment;
-
-    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> replies = new ArrayList<>();
 
-
+    public void addComment(Comment comment) {
+        this.replies.add(comment);
+    }
+    @JsonIgnore
+    public Comment getLast() {
+        if(replies != null && replies.size() > 0) {
+            return replies.get(replies.size() - 1);
+        }
+        return null;
+    }
+    // Getters and setters
 }

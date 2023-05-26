@@ -1,6 +1,7 @@
 package mk.ukim.finki.notefy.model.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,9 +36,19 @@ public class Discussion {
     @CreatedDate
     private LocalDateTime createdTime;
 
-    @OneToMany(mappedBy = "discussion", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
+    @JsonIgnore
+    public Comment getLastComment() {
+        if(comments != null && comments.size() > 0) {
+            return comments.get(comments.size() - 1);
+        }
+        return null;
+    }
     @OneToMany(mappedBy = "discussion", cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
 }
