@@ -5,8 +5,10 @@ import mk.ukim.finki.notefy.model.entities.Category;
 import mk.ukim.finki.notefy.model.entities.Post;
 import mk.ukim.finki.notefy.model.entities.Subject;
 import mk.ukim.finki.notefy.repository.PostRepository;
+import mk.ukim.finki.notefy.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,8 +20,11 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public PostService(PostRepository postRepository) {
+    private final UserRepository userRepository;
+
+    public PostService(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Post> getAllPosts() {
@@ -42,7 +47,6 @@ public class PostService {
         existingPost.setTitle(updatedPost.getTitle());
         existingPost.setDescription(updatedPost.getDescription());
         existingPost.setPrice(updatedPost.getPrice());
-        existingPost.setFile(updatedPost.getFile());
         existingPost.setUrl(updatedPost.getUrl());
         existingPost.setPicture(updatedPost.getPicture());
         existingPost.setSubject(updatedPost.getSubject());
@@ -117,8 +121,9 @@ public class PostService {
 
     }
 
-    public List<Post> findPostsByAuthor(AppUser appUser){
-        return this.postRepository.findAllByCreatedBy(appUser);
+    public List<Post> findPostsByAuthor(String username) throws IOException {
+        AppUser user = userRepository.findByUsername(username).orElseThrow(IOException::new);
+        return this.postRepository.findAllByCreatedBy(user);
     }
 
     public List<Post> findPostsBySubject(Subject subject){
