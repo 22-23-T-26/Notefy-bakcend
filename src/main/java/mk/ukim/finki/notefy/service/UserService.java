@@ -11,14 +11,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
 
 //    public AppUser findByUsernameAndPassword(String username, String password) {
@@ -26,10 +30,12 @@ public class UserService {
 //                .orElseThrow(() -> new BadRequest("User with those credentials doesn't exist"));
 //    }
 
-    public AppUser getByUsernameOrEmailOrNull(String username) {
-        return userRepository.getByUsernameOrEmail(username, username)
-                .orElse(null);
-    }
+  public AppUser getByUsernameOrEmailOrNull(String username) {
+    return userRepository.getByUsernameOrEmail(username, username)
+        .orElse(null);
+  }
+
+
 
     @PostConstruct
     public void init() {
@@ -48,37 +54,57 @@ public class UserService {
 
     }
 
-    public AppUser getByUsernameOrNull(String username) {
-        return userRepository.findByUsername(username).orElse(null);
-    }
-    public AppUser createUser(RegisterDto registerDto) {
-        AppUser user = getByUsernameOrNull(registerDto.getUsername());
-        if (user != null) {
-            throw new BadRequest("User with username: " +registerDto.getUsername() + " already exists!");
-        }
-        user = userRepository.findByEmail(registerDto.getEmail()).orElse(null);
-        if (user != null) {
-            throw new BadRequest("User with email: " +registerDto.getEmail() + " already exists!");
-        }
+  public AppUser getByUsernameOrNull(String username) {
+    return userRepository.findByUsername(username).orElse(null);
+  }
 
-        return userRepository.save(
-                AppUser.builder()
-                        .username(registerDto.getUsername())
-                        .password(passwordEncoder.encode(registerDto.getPassword()))
-                        .email(registerDto.getEmail())
-                        .firstName(registerDto.getFirstName())
-                        .lastName(registerDto.getLastName())
-                        .phoneNumber(registerDto.getPhoneNumber())
-                        .role(registerDto.getRole())
-                        .build()
-        );
+  public AppUser createUser(RegisterDto registerDto) {
+    AppUser user = getByUsernameOrNull(registerDto.getUsername());
+    if (user != null) {
+      throw new BadRequest("User with username: " + registerDto.getUsername() + " already exists!");
+    }
+    user = userRepository.findByEmail(registerDto.getEmail()).orElse(null);
+    if (user != null) {
+      throw new BadRequest("User with email: " + registerDto.getEmail() + " already exists!");
     }
 
-    public AppUser getCurrentUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        return userRepository.getByUsernameOrEmail(username, username)
-                .orElseThrow(() -> new BadRequest("You are not authenticated"));
-    }
+    return userRepository.save(
+        AppUser.builder()
+            .username(registerDto.getUsername())
+            .password(passwordEncoder.encode(registerDto.getPassword()))
+            .email(registerDto.getEmail())
+            .firstName(registerDto.getFirstName())
+            .lastName(registerDto.getLastName())
+            .phoneNumber(registerDto.getPhoneNumber())
+            .role(registerDto.getRole())
+            .build()
+    );
+  }
 
-    //TODO: Update user
+  public AppUser getCurrentUser() {
+    String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+    return userRepository.getByUsernameOrEmail(username, username)
+        .orElseThrow(() -> new BadRequest("You are not authenticated"));
+  }
+
+  public double getRatingForUser(String username) {
+
+    var user = userRepository.findByUsername(username);
+    if (user.isEmpty()) {
+      return 0.0;
+    }
+    final var existingUser = user.get();
+
+    List<Integer> ratings = new ArrayList<>();
+
+    existingUser.getPostsOfUsers().stream()
+        .map(i -> i.getRatingsByUser().values())
+        .forEach(ratings::addAll);
+
+    return (double) ratings.stream()
+        .mapToInt(Integer::intValue)
+        .sum() / ratings.size();
+
+
+  }
 }
