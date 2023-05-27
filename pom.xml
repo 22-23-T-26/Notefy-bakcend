@@ -11,7 +11,7 @@
     <groupId>mk.ukim.finki</groupId>
     <artifactId>notefy</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>notefy</name>
     <description>A marketplace for scripts and learning materials</description>
     <properties>
