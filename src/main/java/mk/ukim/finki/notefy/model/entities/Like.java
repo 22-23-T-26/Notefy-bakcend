@@ -1,6 +1,7 @@
 package mk.ukim.finki.notefy.model.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,10 +24,12 @@ public class Like {
 
     @ManyToOne
     @JoinColumn(name="user_id")
+    @JsonIgnore
     private AppUser user;
 
     @ManyToOne
     @JoinColumn(name="discussion_id")
+    @JsonIgnore
     private Discussion discussion;
 
     // Getters and setters

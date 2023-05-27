@@ -3,15 +3,18 @@ package mk.ukim.finki.notefy.service;
 import mk.ukim.finki.notefy.exception.BadRequest;
 import mk.ukim.finki.notefy.model.dto.RegisterDto;
 import mk.ukim.finki.notefy.model.entities.AppUser;
+import mk.ukim.finki.notefy.model.entities.Role;
 import mk.ukim.finki.notefy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class UserService {
@@ -32,6 +35,24 @@ public class UserService {
         .orElse(null);
   }
 
+
+
+    @PostConstruct
+    public void init() {
+
+        if (!userRepository.findByUsername("admin").isPresent()) {
+            userRepository.save(
+                    AppUser.builder()
+                            .username("admin")
+                            .firstName("Admin")
+                            .lastName("Administrator")
+                            .role(Role.ADMIN)
+                            .password(passwordEncoder.encode("admin"))
+                            .build()
+            );
+        }
+
+    }
 
   public AppUser getByUsernameOrNull(String username) {
     return userRepository.findByUsername(username).orElse(null);
