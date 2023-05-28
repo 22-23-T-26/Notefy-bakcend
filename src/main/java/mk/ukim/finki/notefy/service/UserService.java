@@ -87,24 +87,4 @@ public class UserService {
         .orElseThrow(() -> new BadRequest("You are not authenticated"));
   }
 
-  public double getRatingForUser(String username) {
-
-    var user = userRepository.findByUsername(username);
-    if (user.isEmpty()) {
-      return 0.0;
-    }
-    final var existingUser = user.get();
-
-    List<Integer> ratings = new ArrayList<>();
-
-    existingUser.getPostsOfUsers().stream()
-        .map(i -> i.getRatingsByUser().values())
-        .forEach(ratings::addAll);
-
-    return (double) ratings.stream()
-        .mapToInt(Integer::intValue)
-        .sum() / ratings.size();
-
-
-  }
 }

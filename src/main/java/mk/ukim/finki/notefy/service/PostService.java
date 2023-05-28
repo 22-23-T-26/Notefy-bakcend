@@ -54,9 +54,8 @@ public class PostService {
         post.setPrice(postDto.getPrice());
         post.setPaymentFlag(postDto.isPaymentFlag());
         post.setCategory(Category.valueOf(postDto.getCategory()));
-        post.setSubject(subjectRepository.findById(postDto.getSubject()).orElseThrow());
+        post.setSubject(null);
         post.setCreatedBy(currentuser);
-        post.setAssignedUsers(new ArrayList<>());
 
         return postRepository.save(post);
     }
@@ -87,58 +86,10 @@ public class PostService {
         return true;
     }
 
-    //Adding user to the Post,
-    // I mainly did this because we want our posts to be rated only by users who have viewed the post
-    public void assignUserToPost(AppUser appUser,Post post){
-
-        Post existingPost = this.postRepository.findById(post.getId()).orElse(null);
-        if (existingPost != null) {
-            if (existingPost.getAssignedUsers() != null) {
-                existingPost.getAssignedUsers().add(appUser);
-            }
-            else{
-                List<AppUser> assignedUsersList = new ArrayList<>();
-                assignedUsersList.add(appUser);
-                existingPost.setAssignedUsers(assignedUsersList);
-            }
-        }
-    }
-
-    // Rating functionality for the post
-    public void ratingPostByAssignedUser(AppUser appUser,Post post, Integer rating){
-
-        Post postById = this.postRepository.findById(post.getId()).orElse(null);
-        if(postById != null){
-            if(rating>0 && rating<=5 && postById.getAssignedUsers().contains(appUser)) {
-                if(postById.getRatingsByUser()==null){
-                    HashMap<Long,Integer> ratings= new HashMap<>();
-                    ratings.put(appUser.getId(),rating);
-                    postById.setRatingsByUser(ratings);
-                }
-                else {
-                    postById.getRatingsByUser().put(appUser.getId(),rating);
-                }
-            }
-        }
-    }
-
     // Getting the post rating
     public double getPostRating(Post post){
         Post postById = this.postRepository.findById(post.getId()).orElse(null);
-        if (postById != null){
-            int sumOfRatings = postById.getRatingsByUser()
-                    .values()
-                    .stream()
-                    .mapToInt(i->i)
-                    .sum();
-
-            if (postById.getAssignedUsers() != null) {
-                double rating= (double) sumOfRatings /(postById.getAssignedUsers().size());
-                postById.setFinalRating(rating);
-                return rating;
-            }
-        }
-        return 0;
+        return postById.getFinalRating();
 
     }
 
