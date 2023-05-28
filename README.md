@@ -20,3 +20,5 @@
    - At the top of the Run view, select Run and Debug and then choose Java in the dropdown menu. The application should now start running.
 
 ##### **Enjoy developing with your Spring Boot app!**
+
+Ps: To run the app locally change the active profile to `dev`
