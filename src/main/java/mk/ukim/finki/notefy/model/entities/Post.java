@@ -30,7 +30,6 @@ public class Post {
     private String description;
     public long price;
     private String url;
-    private File picture;
     @ManyToOne
     private Subject subject;
     @ManyToOne
@@ -41,6 +40,7 @@ public class Post {
 
     //Date of creating the post
     @CreationTimestamp
+    @Null
     private Date dateOfCreation;
 
     //All Users who got the post
@@ -54,6 +54,7 @@ public class Post {
     @Column(name="rating")
     @CollectionTable(name = "post_ratings",
             joinColumns = @JoinColumn(name = "post_id"))
+    @Null
     private Map<Long,Integer> ratingsByUser=new HashMap<Long,Integer>();
 
     @Null
