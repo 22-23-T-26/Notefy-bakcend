@@ -3,6 +3,7 @@
 - Java Development Kit (JDK): You will need JDK 11 installed on your machine. You can download it from the official [Oracle website](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html).
 - Check if the correct Java version is installed: `java -version`
 - The above command should display the installed version of Java on your machine.
+- Clone the repository from github
 
 # Running the App
 
