@@ -74,7 +74,7 @@ public class PostService {
                 .orElseThrow(() -> new BadRequest("You are not authenticated"));
         Post post = new Post();
         post.setDescription(postDto.getDescription());
-        post.setDescription(postDto.getTitle());
+        post.setTitle(postDto.getTitle());
         post.setUrl(postDto.getUrl());
         post.setPrice(postDto.getPrice());
         post.setPaymentFlag(postDto.isPaymentFlag());
