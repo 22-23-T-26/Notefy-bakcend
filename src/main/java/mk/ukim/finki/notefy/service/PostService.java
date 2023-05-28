@@ -1,11 +1,15 @@
 package mk.ukim.finki.notefy.service;
 
+import mk.ukim.finki.notefy.exception.BadRequest;
+import mk.ukim.finki.notefy.model.dto.CreatePostDto;
 import mk.ukim.finki.notefy.model.entities.AppUser;
 import mk.ukim.finki.notefy.model.entities.Category;
 import mk.ukim.finki.notefy.model.entities.Post;
 import mk.ukim.finki.notefy.model.entities.Subject;
 import mk.ukim.finki.notefy.repository.PostRepository;
+import mk.ukim.finki.notefy.repository.SubjectRepository;
 import mk.ukim.finki.notefy.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,9 +26,13 @@ public class PostService {
 
     private final UserRepository userRepository;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
+    private final SubjectRepository subjectRepository;
+
+
+    public PostService(PostRepository postRepository, UserRepository userRepository, SubjectRepository subjectRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.subjectRepository = subjectRepository;
     }
 
     public List<Post> getAllPosts() {
@@ -35,7 +43,21 @@ public class PostService {
         return postRepository.findById(id).orElse(null);
     }
 
-    public Post createPost(Post post) {
+    public Post createPost(CreatePostDto postDto) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        AppUser currentuser = userRepository.getByUsernameOrEmail(username, username)
+                .orElseThrow(() -> new BadRequest("You are not authenticated"));
+        Post post = new Post();
+        post.setDescription(postDto.getDescription());
+        post.setDescription(postDto.getTitle());
+        post.setUrl(postDto.getUrl());
+        post.setPrice(postDto.getPrice());
+        post.setPaymentFlag(postDto.isPaymentFlag());
+        post.setCategory(Category.valueOf(postDto.getCategory()));
+        post.setSubject(subjectRepository.findById(postDto.getSubject()).orElseThrow());
+        post.setCreatedBy(currentuser);
+        post.setAssignedUsers(new ArrayList<>());
+
         return postRepository.save(post);
     }
 

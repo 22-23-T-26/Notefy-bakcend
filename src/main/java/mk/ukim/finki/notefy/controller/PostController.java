@@ -1,6 +1,7 @@
 package mk.ukim.finki.notefy.controller;
 
 import lombok.AllArgsConstructor;
+import mk.ukim.finki.notefy.model.dto.CreatePostDto;
 import mk.ukim.finki.notefy.model.entities.Post;
 import mk.ukim.finki.notefy.service.PostService;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +31,9 @@ public class PostController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Post> addPost(@RequestBody Post post){
+    public ResponseEntity<Post> addPost(@RequestBody CreatePostDto postDto){
 
-        postService.createPost(post);
-        return ResponseEntity.ok(post);
+        return ResponseEntity.ok(postService.createPost(postDto));
     }
 
     @GetMapping("/all-by-author")
