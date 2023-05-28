@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +22,7 @@ public class AppUser {
 
     private String username;
 
+    @JsonIgnore
     private String password;
 
     private String email;

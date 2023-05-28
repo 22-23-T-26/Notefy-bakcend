@@ -12,10 +12,9 @@ import mk.ukim.finki.notefy.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -28,6 +27,32 @@ public class PostService {
 
     private final SubjectRepository subjectRepository;
 
+
+    @PostConstruct
+    public void init() {
+        subjectRepository.save(
+                Subject.builder()
+                        .id(1L)
+                        .subjectName("General")
+                        .build()
+        );
+
+        subjectRepository.save(
+                Subject.builder()
+                        .id(2L)
+                        .subjectName("Math")
+                        .build()
+        );
+
+        subjectRepository.save(
+                Subject.builder()
+                        .id(3L)
+                        .subjectName("Programming")
+                        .build()
+        );
+
+
+    }
 
     public PostService(PostRepository postRepository, UserRepository userRepository, SubjectRepository subjectRepository) {
         this.postRepository = postRepository;
@@ -54,7 +79,7 @@ public class PostService {
         post.setPrice(postDto.getPrice());
         post.setPaymentFlag(postDto.isPaymentFlag());
         post.setCategory(Category.valueOf(postDto.getCategory()));
-        post.setSubject(subjectRepository.getReferenceById(postDto.getSubject()));
+        post.setSubject(subjectRepository.findById(postDto.getSubject()).orElse(null));
         post.setCreatedBy(currentuser);
 
         return postRepository.save(post);

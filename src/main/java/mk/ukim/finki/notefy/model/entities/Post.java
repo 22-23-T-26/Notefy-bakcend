@@ -4,15 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.Null;
-import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -20,6 +16,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Post {
 
     @Id
@@ -31,7 +28,6 @@ public class Post {
     public long price;
     private String url;
     @ManyToOne
-    @Null
     private Subject subject;
     @ManyToOne
     private AppUser createdBy;
@@ -39,12 +35,10 @@ public class Post {
     @Enumerated(value = EnumType.STRING)
     private Category category;
 
-    //Date of creating the post
-    @CreationTimestamp
-    @Null
-    private Date dateOfCreation;
+    @Column(nullable = false, updatable = false)
+    @CreatedDate
+    private LocalDateTime dateOfCreation;
 
-    @Null
     private Double finalRating;
 
 }
