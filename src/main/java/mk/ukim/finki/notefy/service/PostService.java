@@ -54,7 +54,7 @@ public class PostService {
         post.setPrice(postDto.getPrice());
         post.setPaymentFlag(postDto.isPaymentFlag());
         post.setCategory(Category.valueOf(postDto.getCategory()));
-        post.setSubject(null);
+        post.setSubject(subjectRepository.getReferenceById(postDto.getSubject()));
         post.setCreatedBy(currentuser);
 
         return postRepository.save(post);
