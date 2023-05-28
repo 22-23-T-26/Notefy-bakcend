@@ -70,7 +70,6 @@ public class PostService {
         existingPost.setDescription(updatedPost.getDescription());
         existingPost.setPrice(updatedPost.getPrice());
         existingPost.setUrl(updatedPost.getUrl());
-        existingPost.setPicture(updatedPost.getPicture());
         existingPost.setSubject(updatedPost.getSubject());
         existingPost.setCreatedBy(updatedPost.getCreatedBy());
         existingPost.setPaymentFlag(updatedPost.isPaymentFlag());
