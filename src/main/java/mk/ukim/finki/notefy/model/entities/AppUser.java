@@ -47,10 +47,6 @@ public class AppUser {
         }
         return fullName;
     }
-    //All Posts that the User is assigning
-    @ManyToMany(mappedBy = "assignedUsers")
-    @Null
-    private List<Post> postsOfUsers;
 
     @OneToMany(mappedBy = "createdUser", cascade = CascadeType.ALL)
     @JsonIgnore

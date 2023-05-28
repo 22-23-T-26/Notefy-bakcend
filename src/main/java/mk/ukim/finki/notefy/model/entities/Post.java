@@ -31,6 +31,7 @@ public class Post {
     public long price;
     private String url;
     @ManyToOne
+    @Null
     private Subject subject;
     @ManyToOne
     private AppUser createdBy;
@@ -42,20 +43,6 @@ public class Post {
     @CreationTimestamp
     @Null
     private Date dateOfCreation;
-
-    //All Users who got the post
-    @ManyToMany
-    @Null
-    private List<AppUser> assignedUsers;
-
-    //Records of all the ratings by assigned users
-    @ElementCollection
-    @MapKeyColumn(name="user_id")
-    @Column(name="rating")
-    @CollectionTable(name = "post_ratings",
-            joinColumns = @JoinColumn(name = "post_id"))
-    @Null
-    private Map<Long,Integer> ratingsByUser=new HashMap<Long,Integer>();
 
     @Null
     private Double finalRating;
