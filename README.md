@@ -8,13 +8,13 @@
 
 ***There are several ways to run the Spring Boot application:***
 
-1. #### IntelliJ IDEA
+1. #### [IntelliJ IDEA](https://www.jetbrains.com/idea/)
    - Open IntelliJ IDEA.
    - Click on File -> Open... and navigate to the project directory.
    - IntelliJ IDEA should automatically recognize the project as a Spring Boot application.
    - You can run the application by clicking on the Run button in the top right corner or by right-clicking on the main method in your @SpringBootApplication class and selecting Run.
-2. #### Visual Studio Code (VSCode)
-   - First, you will need to install the Java Extension Pack from the VSCode marketplace. This includes the Language Support for Java(TM) by Red Hat and Debugger for Java extensions which are necessary to run Java applications in VSCode.
+2. #### [Visual Studio Code (VSCode)](https://code.visualstudio.com/download)
+   - First, you will need to install the [Java Extension Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack) from the VSCode marketplace. This includes the Language Support for Java(TM) by Red Hat and Debugger for Java extensions which are necessary to run Java applications in VSCode.
    - Open the project in VSCode (File -> Open Folder...).
    - Click on the Run icon in the Activity Bar on the side of VSCode.
    - At the top of the Run view, select Run and Debug and then choose Java in the dropdown menu. The application should now start running.
